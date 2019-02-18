@@ -51,7 +51,7 @@ class Client:
             token = token.split('/')[-1]
         self.__base_url = f'https://www.jsonstore.io/{token}'
 
-    def get(self, key: str, timeout: int = DEFAULT_TIMEOUT_SECONDS):
+    def retrieve(self, key: str, timeout: int = DEFAULT_TIMEOUT_SECONDS):
         """Get gets value from jsonstore.
 
         :param key:str Name of key to a resource
@@ -66,7 +66,9 @@ class Client:
         except (ValueError, KeyError) as e:
             raise JsonstoreError(str(e))
 
-    def save(self, key: str, data, timeout: int = DEFAULT_TIMEOUT_SECONDS):
+    get = retrieve
+
+    def store(self, key: str, data, timeout: int = DEFAULT_TIMEOUT_SECONDS):
         """Save data in jsonstore under a key.
 
         :param key:str Name of key to a resource
@@ -80,6 +82,8 @@ class Client:
             self.__check_response(resp)
         except (ValueError, KeyError) as e:
             raise JsonstoreError(str(e))
+
+    save = store
 
     def delete(self, key: str, timeout: int = DEFAULT_TIMEOUT_SECONDS):
         """Deletes data in jsonstore under a key.
