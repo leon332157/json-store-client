@@ -12,30 +12,7 @@ class JsonstoreError(Exception):
 
 class Client:
     """Http client for the www.jsonstore.io API
-
-    Usage:
-
-        import json_store_client
-
-        # Initialize the client class
-
-        client = json_store_client.Client('insert your token/url here')
-
-    Save/Change data in jsonstore with a key
-
-        client.save('test_key', {'a':'B'})
-
-    Get data in jsonstore with a key
-
-        test_dict=client.get('test_key')
-        test_dict => {'a':'B'}
-
-    Delete data in jsonstore with a key
-
-        client.delete('test_key')
-
     """
-
     def __init__(self, token: str):
         self.session = requests.Session()
         self.version = pkg_resources.require('json-store-client')[0].version
