@@ -1,6 +1,12 @@
 # json-store-client
 A Python client for jsonstore.io
 
+## Installation
+
+```bash
+pip install json-store-client
+```
+
 ## Usage
 
 ```python
