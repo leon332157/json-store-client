@@ -25,8 +25,8 @@ print(data["alfa"])
 # Deletes the data after printing parts of it
 client.delete("foo")
 ```
-## json-store-client API:
 
+## json-store-client API:
 ### json_store_client.Client(token)
 Returns the client to use for data ops
 ###### token(str): The API token from [jsonstore.io](https://www.jsonstore.io/)
@@ -43,6 +43,7 @@ Storing data in the store with a key
 Retrieve data in jsonstore with a key
 ##### key (str): The key to get on jsonstore.
 ##### timeout (int): The timeout for the http request. Default 5 seconds.
+
 
 ### client.delete(key[, timeout])
 Delete data in jsonstore with a key
