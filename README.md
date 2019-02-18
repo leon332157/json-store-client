@@ -2,7 +2,6 @@
 A Python client for [jsonstore.io](https://www.jsonstore.io/)
 
 ## Installation
-
 ```bash
 pip install json-store-client
 ```
@@ -26,7 +25,7 @@ print(data["alfa"])
 client.delete("foo")
 ```
 
-## json-store-client API:
+## json-store-client API
 ### json_store_client.Client(token)
 Returns the client to use for data ops
 ###### token(str): The API token from [jsonstore.io](https://www.jsonstore.io/)
