@@ -2,6 +2,7 @@ import json
 
 import jsonpickle
 import requests
+import pkg_resources
 
 DEFAULT_TIMEOUT_SECONDS = 5
 
@@ -14,30 +15,52 @@ class JsonstoreError(Exception):
 class Client:
     """Http client for the www.jsonstore.io API
 
-    Attributes:
-        __base_url Base url for jsonstore, including a user token.
-        __headers  Request headers to include in all requests to jsonstore.
+    Usage:
+
+        import json_store_client
+
+        #Initialize the client class
+
+        client = json_store_client.Client('insert your token/url here')
+
+    Save/Change data in jsonstore with a key
+
+        client.save('test_key', {'a':'B'})
+
+    Get data in jsonstore with a key
+
+        test_dict=client.get('test_key')
+        test_dict => {'a':'B'}
+
+    Delete data in jsonstore with a key
+
+        client.delete('test_key')
+
     """
 
     def __init__(self, token: str):
         self.session = requests.Session()
+        self.version = pkg_resources.require("json-store-client")[0].version
         self.session.headers.update({
             'Accept': 'application/json',
-            'Content-type': 'application/json'
-            })
+            'Content-type': 'application/json',
+            'User-Agent': f'Mozilla/5.0 Python/json-store-client/{self.version}'
+            }
+            )
+        if token.startswith('https://'):
+            token = token.split('/')[-1]
         self.__base_url = f'https://www.jsonstore.io/{token}'
 
     def get(self, key: str, timeout: int = DEFAULT_TIMEOUT_SECONDS):
         """Get gets value from jsonstore.
 
-        :param key: Name of key to a resource
-        :param timeout: Timeout of the request in seconds
-        :return: Response result as a dictionary
+        :param key:str Name of key to a resource
+        :param timeout:int Timeout of the request in seconds
+        :return: The object that was stored
         """
         url = self.__finalize_url(key)
         try:
             resp = self.session.get(url, timeout=timeout)
-            print(resp.headers)
             json_resp = self.__check_response(resp)
             return jsonpickle.decode(json_resp['result'])
         except (ValueError, KeyError) as e:

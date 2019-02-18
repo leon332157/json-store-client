@@ -7,7 +7,7 @@ requires = [
     ]
 setuptools.setup(
     name="json-store-client",
-    version="0.0.1alpha",
+    version="0.0.1a1",
     author="leon332157",
     author_email="leon332157@gmail.com",
     description="A client library for jsonstore",
