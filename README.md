@@ -28,23 +28,23 @@ client.delete("foo")
 ## json-store-client API
 ### json_store_client.Client(token)
 Returns the client to use for data ops
-###### token(str): The API token from [jsonstore.io](https://www.jsonstore.io/)
+###### token (str): The API token from [jsonstore.io](https://www.jsonstore.io)
 
 
 ### client.store(key, data[, timeout])
 Storing data in the store with a key
-##### key (str): The key to be stored on jsonstore.
+##### key (str): The key to be stored on jsonstore
 ##### data (any): The data to be stored under the key. It can be any Python objects. Will be processed with [jsonpickle](https://github.com/jsonpickle/jsonpickle)
-##### timeout (int): The timeout for the http request. Default 5 seconds.
+##### timeout (int): The timeout for the http request. Default 5 seconds
 
 
 ### client.retrieve(key[, timeout])
 Retrieve data in jsonstore with a key
-##### key (str): The key to get on jsonstore.
-##### timeout (int): The timeout for the http request. Default 5 seconds.
+##### key (str): The key to get on jsonstore
+##### timeout (int): The timeout for the http request. Default 5 seconds
 
 
 ### client.delete(key[, timeout])
 Delete data in jsonstore with a key
-##### key (required[str]): The key to get on jsonstore.
-##### timeout (optional[int]): The timeout for the http request. Default 5 seconds.
+##### key (str): The key to get on jsonstore
+##### timeout (int): The timeout for the http request. Default 5 seconds
