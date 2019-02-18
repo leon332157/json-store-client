@@ -32,7 +32,7 @@ Returns the client to use for data ops
 
 
 ### client.store(key, data[, timeout])
-Storing data in the store with a key
+Storing data in jsonstore with a key
 ##### key (str): The key to be stored on jsonstore
 ##### data (any): The data to be stored under the key. It can be any Python objects. Will be processed with [jsonpickle](https://github.com/jsonpickle/jsonpickle)
 ##### timeout (int): The timeout for the http request. Default 5 seconds
@@ -47,4 +47,7 @@ Retrieve data in jsonstore with a key
 ### client.delete(key[, timeout])
 Delete data in jsonstore with a key
 ##### key (str): The key to get on jsonstore
+<<<<<<< HEAD
+##### timeout (int): The timeout for the http request. Default 5 seconds
+=======
 ##### timeout (int): The timeout for the http request. Default 5 seconds
