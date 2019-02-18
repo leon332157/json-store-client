@@ -1,11 +1,9 @@
 import json
-
 import jsonpickle
 import requests
 import pkg_resources
 
 DEFAULT_TIMEOUT_SECONDS = 5
-
 
 class JsonstoreError(Exception):
     """Exception for errors occurring in calls to Jsonstore"""
@@ -19,7 +17,7 @@ class Client:
 
         import json_store_client
 
-        #Initialize the client class
+        # Initialize the client class
 
         client = json_store_client.Client('insert your token/url here')
 
@@ -40,13 +38,12 @@ class Client:
 
     def __init__(self, token: str):
         self.session = requests.Session()
-        self.version = pkg_resources.require("json-store-client")[0].version
+        self.version = pkg_resources.require('json-store-client')[0].version
         self.session.headers.update({
             'Accept': 'application/json',
             'Content-type': 'application/json',
             'User-Agent': f'Mozilla/5.0 Python/json-store-client/{self.version}'
-            }
-            )
+        })
         if token.startswith('https://'):
             token = token.split('/')[-1]
         self.__base_url = f'https://www.jsonstore.io/{token}'
@@ -60,7 +57,7 @@ class Client:
         """
         url = self.__finalize_url(key)
         try:
-            resp = self.session.get(url, timeout=timeout)
+            resp = self.session.get(url, timeout = timeout)
             json_resp = self.__check_response(resp)
             return jsonpickle.decode(json_resp['result'])
         except (ValueError, KeyError) as e:
@@ -78,7 +75,7 @@ class Client:
         url = self.__finalize_url(key)
         json_data = json.dumps(jsonpickle.encode(data))
         try:
-            resp = self.session.post(url, data=json_data, timeout=timeout)
+            resp = self.session.post(url, data = json_data, timeout = timeout)
             self.__check_response(resp)
         except (ValueError, KeyError) as e:
             raise JsonstoreError(str(e))
@@ -93,8 +90,7 @@ class Client:
         """
         url = self.__finalize_url(key)
         try:
-            resp = self.session.delete(url,
-                                       timeout=timeout)
+            resp = self.session.delete(url, timeout = timeout)
             self.__check_response(resp)
         except (ValueError, KeyError) as e:
             raise JsonstoreError(str(e))
