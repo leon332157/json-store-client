@@ -62,6 +62,8 @@ class Client:
         try:
             resp = self.session.get(url, timeout=timeout)
             json_resp = self.__check_response(resp)
+            if not json_resp:
+                return None
             return jsonpickle.decode(json_resp['result'])
         except (ValueError, KeyError) as e:
             raise JsonstoreError(str(e))
