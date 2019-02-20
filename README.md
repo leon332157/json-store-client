@@ -50,6 +50,8 @@ Storing data in jsonstore with a key
 
 Retrieve data in jsonstore with a key
 
+##### If nothing is saved under the key, it will return None.
+
 ###### key (str): The key to get on jsonstore
 ###### timeout (int): The timeout for the http request. Default 5 seconds
 

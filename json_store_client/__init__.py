@@ -2,6 +2,7 @@ import json
 
 import jsonpickle
 import requests
+import warnings
 import pkg_resources
 
 DEFAULT_TIMEOUT_SECONDS = 5
@@ -47,6 +48,8 @@ class Client:
             'User-Agent': f'Mozilla/5.0 Python/json-store-client/{self.version}'
             }
             )
+        if not isinstance(token, str):
+            raise TypeError("Token must be str, not {}".format(type(key)))
         if token.startswith('https://'):
             token = token.split('/')[-1]
         self.__base_url = f'https://www.jsonstore.io/{token}'
@@ -58,11 +61,14 @@ class Client:
         :param timeout:int Timeout of the request in seconds
         :return: The object that was stored
         """
+        if not isinstance(key, str):
+            raise TypeError("Key must be str, not {}".format(type(key)))
         url = self.__finalize_url(key)
         try:
             resp = self.session.get(url, timeout=timeout)
             json_resp = self.__check_response(resp)
             if not json_resp:
+                warnings.warn('Nothing is received under the key, please make sure some is saved under this key.')
                 return None
             return jsonpickle.decode(json_resp['result'])
         except (ValueError, KeyError) as e:
@@ -77,6 +83,8 @@ class Client:
         :param data:any Data to be updated, will be dumped with jsonpickle.
         :param timeout:int Timeout of the request in seconds
         """
+        if not isinstance(key, str):
+            raise TypeError("Key must be str, not {}".format(type(key)))
         url = self.__finalize_url(key)
         json_data = json.dumps(jsonpickle.encode(data))
         try:
@@ -93,6 +101,8 @@ class Client:
         :param key:str Name of key to a resource
         :param timeout:int Timeout of the request in seconds
         """
+        if not isinstance(key, str):
+            raise TypeError("Key must be str, not {}".format(type(key)))
         url = self.__finalize_url(key)
         try:
             resp = self.session.delete(url,
