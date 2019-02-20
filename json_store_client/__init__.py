@@ -46,10 +46,9 @@ class Client:
             'Accept': 'application/json',
             'Content-type': 'application/json',
             'User-Agent': f'Mozilla/5.0 Python/json-store-client/{self.version}'
-            }
-            )
+            })
         if not isinstance(token, str):
-            raise TypeError("Token must be str, not {}".format(type(key)))
+            raise TypeError("Token must be str, not {}".format(token.__class__.__name__))
         if token.startswith('https://'):
             token = token.split('/')[-1]
         self.__base_url = f'https://www.jsonstore.io/{token}'
@@ -62,7 +61,7 @@ class Client:
         :return: The object that was stored
         """
         if not isinstance(key, str):
-            raise TypeError("Key must be str, not {}".format(type(key)))
+            raise TypeError("Key must be str, not {}".format(key.__class__.__name__))
         url = self.__finalize_url(key)
         try:
             resp = self.session.get(url, timeout=timeout)
@@ -84,7 +83,7 @@ class Client:
         :param timeout:int Timeout of the request in seconds
         """
         if not isinstance(key, str):
-            raise TypeError("Key must be str, not {}".format(type(key)))
+            raise TypeError("Key must be str, not {}".format(key.__class__.__name__))
         url = self.__finalize_url(key)
         json_data = json.dumps(jsonpickle.encode(data))
         try:
@@ -102,7 +101,7 @@ class Client:
         :param timeout:int Timeout of the request in seconds
         """
         if not isinstance(key, str):
-            raise TypeError("Key must be str, not {}".format(type(key)))
+            raise TypeError("Key must be str, not {}".format(key.__class__.__name__))
         url = self.__finalize_url(key)
         try:
             resp = self.session.delete(url,
@@ -118,7 +117,7 @@ class Client:
         :return: Deserialized json response
         """
         if not isinstance(response, requests.Response):
-            raise TypeError('Unexpected type {}'.format(type(response)))
+            raise TypeError('Unexpected type {}'.format(type(response.__class__.__name__)))
         response.raise_for_status()
         resp = response.json()
         if 'ok' not in resp:
