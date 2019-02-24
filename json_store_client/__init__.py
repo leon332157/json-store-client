@@ -26,7 +26,8 @@ class Client:
 
     Save/Change data in jsonstore with a key
 
-        client.save('test_key', {'a':'B'})
+        client.store('test_key', {'a':'B'})
+        client.save({'test_key:{'a':'B'}) # Using dict key and value mapping.
 
     Get data in jsonstore with a key
 
@@ -66,8 +67,8 @@ class Client:
         try:
             resp = self.session.get(url, timeout=timeout)
             json_resp = self.__check_response(resp)
-            if not json_resp:
-                warnings.warn('Nothing is received under the key, please make sure some is saved under this key.')
+            if not json_resp or not json_resp['result']:
+                warnings.warn('Jsonstore returned null, please make sure some is saved under this key.')
                 return None
             return jsonpickle.decode(json_resp['result'])
         except (ValueError, KeyError) as e:
@@ -79,7 +80,7 @@ class Client:
         """Save data in jsonstore under a key.
 
         :param key:str Name of key to a resource
-        :param data:any Data to be updated, will be dumped with jsonpickle.
+        :param data:any Data to be updated/saved, will be processed with jsonpickle.
         :param timeout:int Timeout of the request in seconds
         """
         if not isinstance(key, str):
@@ -92,7 +93,16 @@ class Client:
         except (ValueError, KeyError) as e:
             raise JsonstoreError(str(e))
 
-    save = store
+    def save(self, data: dict, timeout: int = DEFAULT_TIMEOUT_SECONDS):
+        """Save data in jsonstore with a dict mapping.
+
+        :param data:dict A dict of {key(s):value(s)} to be updated. Value(s) can be any python object, will be processed with jsonpickle.
+        :param timeout:int Timeout of the request in seconds
+        """
+        if not isinstance(data, dict):
+            raise TypeError("The data must be dict, not {}".format(data.__class__.__name__))
+        for key, value in data.items():
+            self.store(key, value, timeout)
 
     def delete(self, key: str, timeout: int = DEFAULT_TIMEOUT_SECONDS):
         """Deletes data in jsonstore under a key.

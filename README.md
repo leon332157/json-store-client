@@ -13,19 +13,22 @@ pip install json-store-client
 ```python
 import json_store_client
 
-jsonStoreToken = "..." # Insert your token here.
+jsonStoreToken = '...' # Insert your token here.
 client = json_store_client.Client(jsonStoreToken)
 
-# Save data to the "foo" key.
-client.store("foo", {"alfa": "bravo", "charlie": "delta"})
+# Save data to the 'foo' key.
+client.store('foo', {'alfa': 'bravo', 'charlie': 'delta'})
 
-# Get the data from the "foo" key.
-data = client.retrieve("foo")
+# Save data with dict mapping
+client.save({'foo':{'alfa':'bravo'}})
 
-print(data["alfa"]) # => "bravo"
+# Get the data from the 'foo' key.
+data = client.retrieve('foo')
+
+print(data['alfa']) # => 'bravo'
 
 # Deletes the data after printing parts of it.
-client.delete("foo")
+client.delete('foo')
 ```
 
 ## json-store-client API
@@ -45,6 +48,12 @@ Storing data in jsonstore with a key
 ###### data (any): The data to be stored under the key. It can be any Python objects. Will be processed with [jsonpickle](https://github.com/jsonpickle/jsonpickle)
 ###### timeout (int): The timeout for the http request. Default 5 seconds
 
+### client.save(data[, timeout])
+
+Storing data in jsonstore with a dict mapping
+
+###### data (dict):  A dict of {key(s):value(s)} to be updated. Value(s) can be any python object, will be dumped with [jsonpickle](https://github.com/jsonpickle/jsonpickle)
+###### timeout (int): The timeout for the http request. Default 5 seconds
 
 ### client.retrieve(key[, timeout])
 
