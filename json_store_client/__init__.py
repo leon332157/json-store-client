@@ -68,7 +68,7 @@ class Client:
             resp = self.session.get(url, timeout=timeout)
             json_resp = self.__check_response(resp)
             if not json_resp or not json_resp['result']:
-                warnings.warn('Jsonstore returned null, please make sure some is saved under this key.')
+                warnings.warn('JSONSTORE WARNING: Jsonstore returned null, please make sure some is saved under this key.')
                 return None
             return jsonpickle.decode(json_resp['result'])
         except (ValueError, KeyError) as e:
