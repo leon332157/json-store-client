@@ -20,7 +20,7 @@ client = json_store_client.Client(jsonStoreToken)
 client.store('foo', {'alfa': 'bravo', 'charlie': 'delta'})
 
 # Save data with dict mapping
-client.save({'foo':{'alfa':'bravo'}})
+client.save({'foo':{'alfa': 'bravo', 'charlie': 'delta'}})
 
 # Get the data from the 'foo' key.
 data = client.retrieve('foo')
