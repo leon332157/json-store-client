@@ -53,7 +53,7 @@ import pkg_resources
 import requests
 
 DEFAULT_TIMEOUT_SECONDS = 5
-VERSION = pkg_resources.require("json-store-client")[0].version
+VERSION = '1.0.2'
 
 
 class JsonstoreError(Exception):
