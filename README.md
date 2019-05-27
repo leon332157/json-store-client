@@ -37,8 +37,9 @@ async def demo_function():
 ## Importing
 
 Before starting to use the API, you will need to import the client classes into your program. The following line of code will simply import everything from the package: -
-
-`from json_store_client import *`
+```python
+from json_store_client import *
+```
 
 
 ## json-store-client API
@@ -66,8 +67,8 @@ Both return the client to use for data operations.
 
 ## Storing data
 
-- `client.store(key, data[, timeout]) # Synchronously`
-- `await client.store(key, data[, timeout]) # Asynchronously`
+- ```python client.store(key, data[, timeout]) # Synchronously```
+- ```python await client.store(key, data[, timeout]) # Asynchronously```
 
 Storing data in jsonstore with a key.
 
