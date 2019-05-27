@@ -67,8 +67,8 @@ Both return the client to use for data operations.
 
 ## Storing data
 
-- ```python client.store(key, data[, timeout]) # Synchronously```
-- ```python await client.store(key, data[, timeout]) # Asynchronously```
+- `client.store(key, data[, timeout]) # Synchronously`
+- `await client.store(key, data[, timeout]) # Asynchronously`
 
 Storing data in jsonstore with a key.
 
