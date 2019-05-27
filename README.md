@@ -11,11 +11,13 @@ pip install json-store-client
 #### Demo of storing a Python object with json-store-client in async on [repl.it](https://repl.it/@leon332157/json-store-client-demo).
 
 ```python
-import json_store_client
+from json_store_client import *
 
-jsonStoreToken = '...' # Insert your token here.
-client = json_store_client.AsyncClient(jsonStoreToken)
+jsonStoreToken = '...' # Insert your token here in place of the three periods(...).
+client = AsyncClient(jsonStoreToken)
+
 async def demo_function():
+
  # Save data to the 'foo' key.
  await client.store('foo', {'alfa': 'bravo', 'charlie': 'delta'})
 
@@ -25,51 +27,82 @@ async def demo_function():
  # Get the data from the 'foo' key.
  data = await client.retrieve('foo')
 
+ print(data) # => {'alfa': 'bravo', 'charlie': 'delta'}
  print(data['alfa']) # => 'bravo'
 
  # Deletes the data after printing parts of it.
  await client.delete('foo')
 ```
 
+## Importing
+
+Before starting to use the API, you will need to import the client classes into your program. The following line of code will simply import everything from the package: -
+`from json_store_client import *`
+
+
 ## json-store-client API
 
-### json_store_client.Client(token)
-### json_store_client.AsyncClient(token)
+### Client
+ **The synchronous Client.**
+ This client handles the API features synchronously using normal functions.
+ #### Constructor
+  ```python
+  my_client = Client(token)
+  ```
 
-Returns the client to use for data operations.
+### AsyncClient
+ **The asynchronous Client.**
+ This client handles the API features asynchronously using coroutines.
+ #### Constructor
+ ```python
+ my_async_client = AsyncClient(token)
+ ```
+
+Both return the client to use for data operations.
 
 ###### token (str): The API token from [jsonstore.io](https://www.jsonstore.io)
 
 
-### client.store(key, data[, timeout])
-### await client.store(key, data[, timeout])
+## Storing data
 
-Storing data in jsonstore with a key
+- `client.store(key, data[, timeout]) # Synchronously`
+- `await client.store(key, data[, timeout]) # Asynchronously`
+
+Storing data in jsonstore with a key.
 
 ###### key (str): The key to be stored on jsonstore
 ###### data (any): The data to be stored under the key. It can be any Python objects. Will be processed with [jsonpickle](https://github.com/jsonpickle/jsonpickle)
 ###### timeout (int): The timeout for the http request. Default 5 seconds
 
-### client.store_multiple(data[, timeout])
-### await client.store_multiple(data[, timeout])
 
-Storing data in jsonstore with a dict mapping
+- `client.store_multiple(data[, timeout])`
+- `await client.store_multiple(data[, timeout])`
+
+Storing data in jsonstore with a dictionary mapping.
 
 ###### data (dict):  A dict of {key(s):value(s)} to be updated. Value(s) can be any python object, will be dumped with [jsonpickle](https://github.com/jsonpickle/jsonpickle)
 ###### timeout (int): The timeout for the http request. Default 5 seconds
 
-### client.retrieve(key[, timeout])
-### await clent.retrieve(key[, timeout])
-Retrieve data in jsonstore with a key
+> **Note:** If there is already some data stored under the key, it will be overwritten.
 
-##### If nothing is saved under the key, it will return None.
+
+## Fetching stored data
+
+- `client.retrieve(key[, timeout])`
+- `await clent.retrieve(key[, timeout])`
+
+Retrieve data in jsonstore with a key.
+
+##### If nothing is saved under the key, it will return `None`.
 
 ###### key (str): The key to get on jsonstore
 ###### timeout (int): The timeout for the http request. Default 5 seconds
 
 
-### client.delete(key[, timeout])
-### await client.delete(key[, timeout])
+## Deleting stored data
+
+- `client.delete(key[, timeout])`
+- `await client.delete(key[, timeout])`
 
 Delete data in jsonstore with a key
 
