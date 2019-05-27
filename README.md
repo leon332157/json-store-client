@@ -37,6 +37,7 @@ async def demo_function():
 ## Importing
 
 Before starting to use the API, you will need to import the client classes into your program. The following line of code will simply import everything from the package: -
+
 `from json_store_client import *`
 
 
