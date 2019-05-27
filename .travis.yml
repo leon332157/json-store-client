@@ -1,12 +1,21 @@
 language: python
+dist: xenial
 python:
-  - "3.7.2"
-  - "3.6"
-  - "nightly"
+- '3.7'
+- '3.6'
+- nightly
 install:
-  - "pip install -r requirements.txt"
-  - "pip install codecov coverage"
+- pip install -r requirements.txt
+- pip install codecov coverage
 after_script:
-  - "codecov"
+- codecov
 script:
-  - "coverage run tests.py"
+- coverage run tests.py
+deploy:
+  provider: pypi
+  user: leon332157
+  password:
+    secure: lE4VFW2tsMXjH1aIDKkEufLL60+4qRlTmKJC2iWI3bX9+N02DWEVhevOvhDJL1QWYMtVhReFoJoAZpaWosB+/lAjKSX9ZEKBT6StLLaboYBH51hWF9G6Fji6CVa6+QEHZ51HEaiw4SjkHX6npfdHyxXqFPjsyZyfE3d+D/tWMyvVVt6WUe3zmfJvHlGTfwdq9Y0IlsRi2Kz9L2SoUBmTBsBzIwmZIlSrgAT/r9Owh7W10oCKHmLQbcrKdAtsqbSvO0O5eOQ0Vs/T8Ie/M332Ly8TDtHVexZqTxClpBIp2r9VwDKPPUTtMjp/ppoLrwavRiwM8CrfeVnUdFyoT+m+xxLV481M4FpsgjQoc5cAK0HTFUTLU6+l0cDx+AGT9g7y8N/TZga+3Mp1Z3JizAWxFfj0Ghs33aqFSviRpVyfP0UkAkztD5UBjadalHeObHlMoqKKUm++a1ziPDRioXT1QhtvISdtYs/rsR1nxI7chYolEJTF4h2U2dlvuOEID22IP8CPVRVCpn8V069uYUKMmpfSSnQSooA1ZIkn8Ca/DbuVknFXWHE+B3OU5sZCgMh+G6FKKKAfF6VvmbMEscL+PP6KF4oLZPjs3c7fHib1/OTj+E0iLxR+ek0Fo0XQRZZkyDPWEPa3n8szE0T8ECaqVOdLGbClYDzOM11IiD/PPbs=
+  on:
+    tags: true
+  skip_existing: true
