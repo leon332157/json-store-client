@@ -3,11 +3,11 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 requires = [
-    'requests', 'jsonpickle', 'aiohttp'
+    'requests', 'aiohttp'
     ]
 setuptools.setup(
     name="json-store-client",
-    version="1.0.2",
+    version="1.1.0",
     author="leon332157",
     author_email="leon332157@gmail.com",
     description="A client library for jsonstore",

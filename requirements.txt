@@ -1,3 +1,4 @@
 requests>=2.22.0
 aiohttp>=3.5.4
 jsonpickle==1.1
+ujson==1.35
