@@ -5,10 +5,12 @@ A Python client for [jsonstore.io](https://www.jsonstore.io/)
 ```bash
 pip install json-store-client
 ```
+#### An optional installation of [ujson](https://pypi.org/project/ujson/) is recommended for faster json processing.
+##### Also installing [cchardet](https://pypi.org/project/cchardet/) and [aiodns](https://pypi.org/project/aiodns/) are recommended by aiohttp for faster performance.
 
 ## Usage
 
-#### Demo of storing a Python object with json-store-client in async on [repl.it](https://repl.it/@leon332157/json-store-client-demo).
+#### Demo of storing a Python json-friendly object with json-store-client in async on [repl.it](https://repl.it/@leon332157/json-store-client-demo).
 
 ```python
 from json_store_client import *
@@ -73,7 +75,7 @@ Both return the client to use for data operations.
 Storing data in jsonstore with a key.
 
 ###### key (str): The key to be stored on jsonstore
-###### data (any): The data to be stored under the key. It can be any Python objects. Will be processed with [jsonpickle](https://github.com/jsonpickle/jsonpickle)
+###### data (any): The data to be stored under the key. It can be any Python objects.
 ###### timeout (int): The timeout for the http request. Default 5 seconds
 
 
@@ -82,7 +84,7 @@ Storing data in jsonstore with a key.
 
 Storing data in jsonstore with a dictionary mapping.
 
-###### data (dict):  A dict of {key(s):value(s)} to be updated. Value(s) can be any python object, will be dumped with [jsonpickle](https://github.com/jsonpickle/jsonpickle)
+###### data (dict):  A dict of {key(s):value(s)} to be updated. 
 ###### timeout (int): The timeout for the http request. Default 5 seconds
 
 > **Note:** If there is already some data stored under the key, it will be overwritten.

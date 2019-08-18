@@ -44,16 +44,19 @@ Delete data in jsonstore with a key
 
     await client.delete('test_key')
 """
-import json
+try:
+    import ujson as json
+except ImportError:
+    import json
+from asyncio import get_event_loop
 from warnings import warn
 
 import aiohttp
-import jsonpickle
-import pkg_resources
 import requests
 
 DEFAULT_TIMEOUT_SECONDS = 5
-VERSION = '1.0.2'
+VERSION = '1.1.0'
+__all__ = ['JsonstoreError', 'Client', 'AsyncClient', 'EmptyResponseWarning']
 
 
 class JsonstoreError(Exception):
@@ -98,7 +101,7 @@ class Client:
             if not json_resp or not json_resp['result']:
                 warn('Jsonstore returned null, please make sure something is saved under this key.', EmptyResponseWarning)
                 return None
-            return jsonpickle.decode(json_resp['result'])
+            return json_resp['result']
         except (ValueError, KeyError) as e:
             raise JsonstoreError(str(e))
 
@@ -108,13 +111,13 @@ class Client:
         """Save data in jsonstore under a key.
 
         :param key:str Name of key to a resource
-        :param data:any Data to be updated/saved, will be processed with jsonpickle.
+        :param data Data to be updated/saved..
         :param timeout:int Timeout of the request in seconds
         """
         if not isinstance(key, str):
             raise TypeError("Key must be str, not {}".format(key.__class__.__name__))
         url = self.__finalize_url(key)
-        json_data = json.dumps(jsonpickle.encode(data))
+        json_data = json.dumps(data)
         resp = self.session.post(url, data=json_data, timeout=timeout)
         self.__check_response(resp)
         return json_data
@@ -173,16 +176,19 @@ class Client:
 class AsyncClient:
     def __init__(self, token: str):
         self.version = VERSION
-        self.session = aiohttp.ClientSession(headers={
-            'Accept': 'application/json',
-            'Content-type': 'application/json',
-            'User-Agent': f'Mozilla/5.0 Python/json-store-client/{self.version}'
-            })
+        self.session = get_event_loop().run_until_complete(self.__create_session())
         if not isinstance(token, str):
             raise TypeError("Token must be str, not {}".format(token.__class__.__name__))
         if token.startswith('https://'):
             token = token.split('/')[-1]
         self.__base_url = f'https://www.jsonstore.io/{token}'
+
+    async def __create_session(self):
+        return aiohttp.ClientSession(headers={
+            'Accept': 'application/json',
+            'Content-type': 'application/json',
+            'User-Agent': f'Mozilla/5.0 Python/json-store-client/{self.version}'
+            })
 
     async def retrieve(self, key: str, timeout: int = DEFAULT_TIMEOUT_SECONDS):
         """Get gets value from jsonstore.
@@ -196,11 +202,12 @@ class AsyncClient:
         url = await self.__finalize_url(key)
         try:
             async with self.session.get(url, timeout=timeout) as s:
-                json_resp = await s.json()
+                json_resp = json.loads(await s.text())
             if not json_resp or not json_resp['result']:
-                warn('JSONSTORE WARNING: Jsonstore returned null, please make sure something is saved under this key.')
+                warn('JSONSTORE WARNING: Jsonstore returned null, please make sure something is saved under this key.',
+                     EmptyResponseWarning)
                 return None
-            return jsonpickle.decode(json_resp['result'])
+            return json_resp['result']
         except (ValueError, KeyError) as e:
             raise JsonstoreError(str(e))
 
@@ -210,13 +217,13 @@ class AsyncClient:
         """Save data in jsonstore under a key.
 
         :param key:str Name of key to a resource
-        :param data:any Data to be updated/saved, will be processed with jsonpickle.
+        :param data Data to be updated/saved.
         :param timeout:int Timeout of the request in seconds
         """
         if not isinstance(key, str):
             raise TypeError("Key must be str, not {}".format(key.__class__.__name__))
         url = await self.__finalize_url(key)
-        json_data = json.dumps(jsonpickle.encode(data))
+        json_data = json.dumps(data)
         async with self.session.post(url, data=json_data, timeout=timeout) as s:
             s.raise_for_status()
         return json_data
@@ -226,7 +233,7 @@ class AsyncClient:
     async def store_multiple(self, data: dict, timeout: int = DEFAULT_TIMEOUT_SECONDS):
         """Save data in jsonstore with a dict mapping.
 
-        :param data:dict A dict of {key(s):value(s)} to be updated. Value(s) can be any python object, will be processed with jsonpickle.
+        :param data:dict A dict of {key(s):value(s)} to be updated.
         :param timeout:int Timeout of the request in seconds
         """
         if not isinstance(data, dict):
